@@ -45,7 +45,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта GET /movies в случае если список фильмов пустой
     @Test
-    void GetMovies_whenEmpty_returnsEmptyArray() throws Exception {
+    void getMovies_whenEmpty_returnsEmptyArray() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .header("Content-Type", "application/json; charset=UTF-8")
@@ -59,7 +59,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта GET /movies в случае если в списке есть один фильм
     @Test
-    void ShouldReturnMovie() throws Exception {
+    void shouldReturnMovie() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .header("Content-Type", "application/json; charset=UTF-8")
@@ -79,7 +79,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта POST /movies при добавлении фильма
     @Test
-    void ShouldAddMovie() throws Exception {
+    void shouldAddMovie() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies?title=Терминатор&year=1984"))
                 .POST(HttpRequest.BodyPublishers.noBody())
@@ -92,7 +92,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта POST /movies при пустом заголовке
     @Test
-    void ShouldThrowErrorWhenTitleIsEmpty() throws Exception {
+    void shouldThrowErrorWhenTitleIsEmpty() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies?title=&year=1984"))
                 .POST(HttpRequest.BodyPublishers.noBody())
@@ -105,7 +105,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта POST /movies при заголовке больше 100 символов
     @Test
-    void ShouldThrowErrorWhenTitleIs100Symbols() throws Exception {
+    void shouldThrowErrorWhenTitleIs100Symbols() throws Exception {
         String title = "Это название фильма состоит из большого количества символов для " +
                 "тестирования ограничения." +
                 "Ограничение жесткое! Нарушать его нельзя!";
@@ -122,7 +122,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта POST /movies при неправильном вводе года
     @Test
-    void ShouldThrowErrorWhenYearIsNotCorrect() throws Exception {
+    void shouldThrowErrorWhenYearIsNotCorrect() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies?title=Терминатор&year=1000"))
                 .POST(HttpRequest.BodyPublishers.noBody())
@@ -142,7 +142,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта POST /movies при неправильном вводе заголовка
     @Test
-    void ShouldThrowErrorWhenContentTypeIsWrong() throws Exception {
+    void shouldThrowErrorWhenContentTypeIsWrong() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies?title=Терминатор&year=1984"))
                 .POST(HttpRequest.BodyPublishers.noBody())
@@ -155,7 +155,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта POST /movies при некорректном JSON.
     @Test
-    void ShouldThrowErrorWhenJSonIsWrong() throws Exception {
+    void shouldThrowErrorWhenJSonIsWrong() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies?title:Терминатор&year=1984"))
                 .POST(HttpRequest.BodyPublishers.noBody())
@@ -168,7 +168,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта GET /movies/{id} на возвращение по id
     @Test
-    void ShouldReturnMovieById() throws Exception {
+    void shouldReturnMovieById() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies/1"))
@@ -183,7 +183,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта GET /movies/{id} в случае если id не найден
     @Test
-    void ShouldReturn404WhenIdNotFound() throws Exception {
+    void shouldReturn404WhenIdNotFound() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies/2"))
@@ -197,7 +197,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта GET /movies/{id} в случае если id не число
     @Test
-    void ShouldReturnErrorWhenIdIsNotNumber() throws Exception {
+    void shouldReturnErrorWhenIdIsNotNumber() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies/abc"))
@@ -211,7 +211,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта DELETE /movies/{id} по id
     @Test
-    void ShouldDelete() throws Exception {
+    void shouldDelete() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies/1"))
@@ -225,7 +225,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта DELETE /movies/{id} в случае когда id не найден
     @Test
-    void ShouldNotDeleteWhenIdNotFound() throws Exception {
+    void shouldNotDeleteWhenIdNotFound() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies/2"))
@@ -239,7 +239,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта DELETE /movies/{id} в случае когда id не является числом
     @Test
-    void ShouldNotDeleteWhenIdNotNumber() throws Exception {
+    void shouldNotDeleteWhenIdNotNumber() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies/abc"))
@@ -253,7 +253,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта GET /movies?year=YYYY
     @Test
-    void ShouldShowMoviesByYear() throws Exception {
+    void shouldShowMoviesByYear() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
         server.getMoviesStore().addMovie(1984, "Гремлины");
         HttpRequest request = HttpRequest.newBuilder()
@@ -270,7 +270,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта GET /movies?year=YYYY в случае если список пустой
     @Test
-    void ShouldShowNoMoviesByYear() throws Exception {
+    void shouldShowNoMoviesByYear() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies?year=1984"))
                 .GET()
@@ -283,7 +283,7 @@ public class MoviesApiTest {
 
     //Проверка эндпоинта GET /movies?year=YYYY в случае если year не является числом
     @Test
-    void ShouldThrowErrorWhenYearIsNotNumber() throws Exception {
+    void shouldThrowErrorWhenYearIsNotNumber() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies?year=abc"))
                 .GET()
@@ -296,7 +296,7 @@ public class MoviesApiTest {
 
     //При неподдерживаемом HTTP-методе возвращается 405 Method Not Allowed.
     @Test
-    void ShouldThrowErrorWhenMethodNotAllowed() throws Exception {
+    void shouldThrowErrorWhenMethodNotAllowed() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(BASE + "/movies?year=abc"))
                 .DELETE()
