@@ -68,18 +68,8 @@ public class MoviesHandler extends BaseHttpHandler {
                 try {
                     String title = query.split("&")[0].split("=")[1];
                     int year = Integer.parseInt(query.split("&")[1].split("=")[1]);
-                    if (title.length() > 100) {
-                        errors.add(new ErrorResponse("В названии должно быть меньше 100 букв"));
-                    }
-                    if (title.isBlank()) {
-                        errors.add(new ErrorResponse("Название не должно быть пустым"));
-                    }
-                    if (year < 1888) {
-                        errors.add(new ErrorResponse("Год выпуска не должен быть меньше 1888"));
-                    }
-                    if (year > LocalDate.now().getYear() + 1) {
-                        errors.add(new ErrorResponse("Год выпуска не должен быть больше следующего года"));
-                    }
+                    errors.addAll(checkMovieTitle(title));
+                    errors.addAll(checkMovieYear(year));
                     if (!errors.isEmpty()) {
                         response = gson.toJson(errors);
                         sendJson(ex, 422, response);
@@ -96,18 +86,8 @@ public class MoviesHandler extends BaseHttpHandler {
                     try {
                         String title = query.split("&")[1].split("=")[1];
                         int year = Integer.parseInt(query.split("&")[0].split("=")[1]);
-                        if (title.length() > 100) {
-                            errors.add(new ErrorResponse("В названии должно быть меньше 100 букв"));
-                        }
-                        if (title.isBlank()) {
-                            errors.add(new ErrorResponse("Название не должно быть пустым"));
-                        }
-                        if (year < 1888) {
-                            errors.add(new ErrorResponse("Год выпуска не должен быть меньше 1888"));
-                        }
-                        if (year > LocalDate.now().getYear() + 1) {
-                            errors.add(new ErrorResponse("Год выпуска не должен быть больше следующего года"));
-                        }
+                        errors.addAll(checkMovieTitle(title));
+                        errors.addAll(checkMovieYear(year));
                         if (!errors.isEmpty()) {
                             sendJson(ex, 422, gson.toJson(errors));
                         } else if (!ex.getRequestHeaders().get("Content-Type")
@@ -128,12 +108,7 @@ public class MoviesHandler extends BaseHttpHandler {
         } else if (method.equalsIgnoreCase("GET") && query != null && query.startsWith("year=")) {
             try {
                 int year = Integer.parseInt(query.split("=")[1]);
-                if (year < 1888) {
-                    errors.add(new ErrorResponse("Год выпуска не должен быть меньше 1888"));
-                }
-                if (year > LocalDate.now().getYear()) {
-                    errors.add(new ErrorResponse("Год выпуска не должен быть больше следующего года"));
-                }
+                errors.addAll(checkMovieYear(year));
                 if (!errors.isEmpty()) {
                     sendJson(ex, 422, gson.toJson(errors));
                 } else if (!ex.getRequestHeaders().get("Content-Type").contains("application/json; charset=UTF-8")) {
@@ -197,6 +172,28 @@ public class MoviesHandler extends BaseHttpHandler {
         } else {
             sendJson(ex, 405, "Method not allowed");
         }
+    }
+
+    public List<ErrorResponse> checkMovieYear(int year) {
+        List<ErrorResponse> errors = new ArrayList<>();
+        if (year < 1888) {
+            errors.add(new ErrorResponse("Год выпуска не должен быть меньше 1888"));
+        }
+        if (year > LocalDate.now().getYear() + 1) {
+            errors.add(new ErrorResponse("Год выпуска не должен быть больше следующего года"));
+        }
+        return errors;
+    }
+
+    public List<ErrorResponse> checkMovieTitle(String title) {
+        List<ErrorResponse> errors = new ArrayList<>();
+        if (title.length() > 100) {
+            errors.add(new ErrorResponse("В названии должно быть меньше 100 букв"));
+        }
+        if (title.isBlank()) {
+            errors.add(new ErrorResponse("Название не должно быть пустым"));
+        }
+        return errors;
     }
 }
 

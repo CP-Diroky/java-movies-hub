@@ -43,7 +43,8 @@ public class MoviesApiTest {
         server.stop();
     }
 
-    //Проверка эндпоинта GET /movies в случае если список фильмов пустой
+    @DisplayName("Тест эндпоинта GET /movies в случае если список фильмов пустой")
+
     @Test
     void getMovies_whenEmpty_returnsEmptyArray() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
@@ -57,7 +58,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта GET /movies в случае если в списке есть один фильм
+    @DisplayName("Тест эндпоинта GET /movies в случае если в списке есть один фильм")
     @Test
     void shouldReturnMovie() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
@@ -77,7 +78,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта POST /movies при добавлении фильма
+    @DisplayName("Тест эндпоинта POST /movies при добавлении фильма")
     @Test
     void shouldAddMovie() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
@@ -90,7 +91,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта POST /movies при пустом заголовке
+    @DisplayName("Тест эндпоинта POST /movies при пустом заголовке")
     @Test
     void shouldThrowErrorWhenTitleIsEmpty() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
@@ -103,7 +104,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта POST /movies при заголовке больше 100 символов
+    @DisplayName("Тест эндпоинта POST /movies при заголовке больше 100 символов")
     @Test
     void shouldThrowErrorWhenTitleIs100Symbols() throws Exception {
         String title = "Это название фильма состоит из большого количества символов для " +
@@ -120,7 +121,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта POST /movies при неправильном вводе года
+    @DisplayName("Тест эндпоинта POST /movies при неправильном вводе года")
     @Test
     void shouldThrowErrorWhenYearIsNotCorrect() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
@@ -140,7 +141,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта POST /movies при неправильном вводе заголовка
+    @DisplayName("Тест эндпоинта POST /movies при неправильном вводе заголовка")
     @Test
     void shouldThrowErrorWhenContentTypeIsWrong() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
@@ -153,7 +154,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта POST /movies при некорректном JSON.
+    @DisplayName("Тест эндпоинта POST /movies при некорректном JSON")
     @Test
     void shouldThrowErrorWhenJSonIsWrong() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
@@ -166,7 +167,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта GET /movies/{id} на возвращение по id
+    @DisplayName("Тест эндпоинта GET /movies/{id} на возвращение по id")
     @Test
     void shouldReturnMovieById() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
@@ -181,7 +182,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта GET /movies/{id} в случае если id не найден
+    @DisplayName("Тест эндпоинта GET /movies/{id} в случае если id не найден")
     @Test
     void shouldReturn404WhenIdNotFound() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
@@ -195,7 +196,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта GET /movies/{id} в случае если id не число
+    @DisplayName("Тест эндпоинта GET /movies/{id} в случае если id не число")
     @Test
     void shouldReturnErrorWhenIdIsNotNumber() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
@@ -209,7 +210,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта DELETE /movies/{id} по id
+    @DisplayName("Тест эндпоинта DELETE /movies/{id} по id")
     @Test
     void shouldDelete() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
@@ -223,7 +224,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта DELETE /movies/{id} в случае когда id не найден
+    @DisplayName("Тест эндпоинта DELETE /movies/{id} в случае когда id не найден")
     @Test
     void shouldNotDeleteWhenIdNotFound() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
@@ -237,7 +238,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта DELETE /movies/{id} в случае когда id не является числом
+    @DisplayName("Тест эндпоинта DELETE /movies/{id} в случае когда id не является числом")
     @Test
     void shouldNotDeleteWhenIdNotNumber() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
@@ -251,7 +252,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта GET /movies?year=YYYY
+    @DisplayName("Тест эндпоинта GET /movies?year=YYYY")
     @Test
     void shouldShowMoviesByYear() throws Exception {
         server.getMoviesStore().addMovie(1984, "Терминатор");
@@ -268,7 +269,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта GET /movies?year=YYYY в случае если список пустой
+    @DisplayName("Тест эндпоинта GET /movies?year=YYYY в случае если список пустой")
     @Test
     void shouldShowNoMoviesByYear() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
@@ -281,7 +282,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //Проверка эндпоинта GET /movies?year=YYYY в случае если year не является числом
+    @DisplayName("Тест эндпоинта GET /movies?year=YYYY в случае если year не является числом")
     @Test
     void shouldThrowErrorWhenYearIsNotNumber() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
@@ -294,7 +295,7 @@ public class MoviesApiTest {
         Assertions.assertTrue(response.headers().map().get("Content-Type").contains("application/json; charset=UTF-8"));
     }
 
-    //При неподдерживаемом HTTP-методе возвращается 405 Method Not Allowed.
+    @DisplayName("При неподдерживаемом HTTP-методе возвращается 405 Method Not Allowed")
     @Test
     void shouldThrowErrorWhenMethodNotAllowed() throws Exception {
         HttpRequest request = HttpRequest.newBuilder()
